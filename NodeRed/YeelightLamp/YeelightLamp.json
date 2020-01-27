@@ -1,0 +1,633 @@
+[
+    {
+        "id": "26188f89.87d0a",
+        "type": "subflow",
+        "name": "YeelightLamp",
+        "info": "",
+        "category": "",
+        "in": [
+            {
+                "x": 40,
+                "y": 80,
+                "wires": [
+                    {
+                        "id": "2af663bd.5e4dec"
+                    }
+                ]
+            }
+        ],
+        "out": [
+            {
+                "x": 1660,
+                "y": 120,
+                "wires": [
+                    {
+                        "id": "955c1460.9561d8",
+                        "port": 0
+                    }
+                ]
+            },
+            {
+                "x": 1660,
+                "y": 240,
+                "wires": [
+                    {
+                        "id": "68c58bb.526f374",
+                        "port": 0
+                    }
+                ]
+            },
+            {
+                "x": 1660,
+                "y": 340,
+                "wires": [
+                    {
+                        "id": "68c58bb.526f374",
+                        "port": 1
+                    }
+                ]
+            }
+        ],
+        "env": [
+            {
+                "name": "ip",
+                "type": "str",
+                "value": "192.168.10.",
+                "ui": {
+                    "type": "input",
+                    "opts": {
+                        "types": [
+                            "str"
+                        ]
+                    }
+                }
+            },
+            {
+                "name": "port",
+                "type": "num",
+                "value": "55443",
+                "ui": {
+                    "type": "input",
+                    "opts": {
+                        "types": [
+                            "num"
+                        ]
+                    }
+                }
+            }
+        ],
+        "color": "#DDAA99"
+    },
+    {
+        "id": "540d5fd9.271d1",
+        "type": "function",
+        "z": "26188f89.87d0a",
+        "name": "",
+        "func": "return { payload: JSON.stringify(msg.payload)+'\\r\\n' };",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 630,
+        "y": 60,
+        "wires": [
+            [
+                "db14dc01.7d46c"
+            ]
+        ]
+    },
+    {
+        "id": "db14dc01.7d46c",
+        "type": "tcp request",
+        "z": "26188f89.87d0a",
+        "server": "${ip}",
+        "port": "${port}",
+        "out": "sit",
+        "splitc": " ",
+        "name": "",
+        "x": 520,
+        "y": 120,
+        "wires": [
+            [
+                "ce9d8d70.01bd48"
+            ]
+        ]
+    },
+    {
+        "id": "ce9d8d70.01bd48",
+        "type": "function",
+        "z": "26188f89.87d0a",
+        "name": "",
+        "func": "return { payload: JSON.parse(msg.payload)};",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 690,
+        "y": 120,
+        "wires": [
+            [
+                "a0cd7879.74ba"
+            ]
+        ]
+    },
+    {
+        "id": "f66d5351.a82128",
+        "type": "switch",
+        "z": "26188f89.87d0a",
+        "name": "Свет вкл?",
+        "property": "payload.result[0]",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "on",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "off",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 870,
+        "y": 120,
+        "wires": [
+            [
+                "e45d5c74.281238"
+            ],
+            [
+                "9f1998b8.1668d8"
+            ]
+        ]
+    },
+    {
+        "id": "e45d5c74.281238",
+        "type": "change",
+        "z": "26188f89.87d0a",
+        "name": ".On = true",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload.On",
+                "pt": "msg",
+                "to": "true",
+                "tot": "bool"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1040,
+        "y": 100,
+        "wires": [
+            [
+                "943f906d.ec3f1"
+            ]
+        ]
+    },
+    {
+        "id": "9f1998b8.1668d8",
+        "type": "change",
+        "z": "26188f89.87d0a",
+        "name": ".On = false",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload.On",
+                "pt": "msg",
+                "to": "false",
+                "tot": "bool"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1030,
+        "y": 140,
+        "wires": [
+            [
+                "943f906d.ec3f1"
+            ]
+        ]
+    },
+    {
+        "id": "943f906d.ec3f1",
+        "type": "switch",
+        "z": "26188f89.87d0a",
+        "name": "Подсветка вкл?",
+        "property": "payload.result[3]",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "on",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "off",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 1200,
+        "y": 120,
+        "wires": [
+            [
+                "50b27497.562d84"
+            ],
+            [
+                "1b385386.322504"
+            ]
+        ]
+    },
+    {
+        "id": "50b27497.562d84",
+        "type": "change",
+        "z": "26188f89.87d0a",
+        "name": ".BgOn = true",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload.BgOn",
+                "pt": "msg",
+                "to": "true",
+                "tot": "bool"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1390,
+        "y": 100,
+        "wires": [
+            [
+                "955c1460.9561d8"
+            ]
+        ]
+    },
+    {
+        "id": "1b385386.322504",
+        "type": "change",
+        "z": "26188f89.87d0a",
+        "name": ".BgOn = false",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload.BgOn",
+                "pt": "msg",
+                "to": "false",
+                "tot": "bool"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1380,
+        "y": 140,
+        "wires": [
+            [
+                "955c1460.9561d8"
+            ]
+        ]
+    },
+    {
+        "id": "955c1460.9561d8",
+        "type": "change",
+        "z": "26188f89.87d0a",
+        "name": "Остальное",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload.Bright",
+                "pt": "msg",
+                "to": "$number(payload.result[1])",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "payload.CT",
+                "pt": "msg",
+                "to": "$number(payload.result[2])",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "payload.BgCT",
+                "pt": "msg",
+                "to": "$number(payload.result[4])",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "payload.BgBright",
+                "pt": "msg",
+                "to": "$number(payload.result[5])",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "payload.BgHue",
+                "pt": "msg",
+                "to": "$number(payload.result[6])",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "payload.BgSat",
+                "pt": "msg",
+                "to": "$number(payload.result[7])",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "payload.Mode",
+                "pt": "msg",
+                "to": "$number(payload.result[8])",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1550,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "380f812d.55f066",
+        "type": "function",
+        "z": "26188f89.87d0a",
+        "name": "set_power",
+        "func": "var payload = {\n    \"id\":1,\n    \"method\":\"set_power\",\n    \"params\":[\n        msg.payload.on,\n        \"smooth\",\n        1000,\n        msg.payload.mode\n    ]\n};\n\nreturn { payload: JSON.stringify(payload)+'\\r\\n' };",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 730,
+        "y": 280,
+        "wires": [
+            [
+                "6d7de178.d1372"
+            ]
+        ]
+    },
+    {
+        "id": "a0cd7879.74ba",
+        "type": "switch",
+        "z": "26188f89.87d0a",
+        "name": "Внешние изменения?",
+        "property": "payload.id",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "istype",
+                "v": "string",
+                "vt": "string"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 840,
+        "y": 60,
+        "wires": [
+            [
+                "f66d5351.a82128"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "2af663bd.5e4dec",
+        "type": "switch",
+        "z": "26188f89.87d0a",
+        "name": "Распределение команд",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "-1",
+                "vt": "num"
+            },
+            {
+                "t": "eq",
+                "v": "0",
+                "vt": "num"
+            },
+            {
+                "t": "eq",
+                "v": "1",
+                "vt": "num"
+            },
+            {
+                "t": "eq",
+                "v": "2",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 4,
+        "x": 190,
+        "y": 80,
+        "wires": [
+            [
+                "1abaf16b.7d416f"
+            ],
+            [
+                "8ef4f4f.5317008"
+            ],
+            [
+                "eb8420a1.6a558"
+            ],
+            [
+                "4a728a0b.180d54"
+            ]
+        ]
+    },
+    {
+        "id": "8ef4f4f.5317008",
+        "type": "change",
+        "z": "26188f89.87d0a",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"on\":\"off\",\"mode\":1}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 480,
+        "y": 240,
+        "wires": [
+            [
+                "380f812d.55f066"
+            ]
+        ]
+    },
+    {
+        "id": "eb8420a1.6a558",
+        "type": "change",
+        "z": "26188f89.87d0a",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"on\":\"on\",\"mode\":1}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 480,
+        "y": 280,
+        "wires": [
+            [
+                "380f812d.55f066"
+            ]
+        ]
+    },
+    {
+        "id": "4a728a0b.180d54",
+        "type": "change",
+        "z": "26188f89.87d0a",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"on\":\"on\",\"mode\":5}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 480,
+        "y": 320,
+        "wires": [
+            [
+                "380f812d.55f066"
+            ]
+        ]
+    },
+    {
+        "id": "1abaf16b.7d416f",
+        "type": "change",
+        "z": "26188f89.87d0a",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"id\":1,\"method\":\"get_prop\",\"params\":[\"power\",\"bright\",\"ct\",\"bg_power\",\"bg_ct\",\"bg_bright\",\"bg_hue\",\"bg_sat\",\"active_mode\"]}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 480,
+        "y": 60,
+        "wires": [
+            [
+                "540d5fd9.271d1"
+            ]
+        ]
+    },
+    {
+        "id": "6d7de178.d1372",
+        "type": "tcp request",
+        "z": "26188f89.87d0a",
+        "server": "${ip}",
+        "port": "${port}",
+        "out": "time",
+        "splitc": "0",
+        "name": "",
+        "x": 900,
+        "y": 280,
+        "wires": [
+            [
+                "2d6fa7de.cc1c18"
+            ]
+        ]
+    },
+    {
+        "id": "2d6fa7de.cc1c18",
+        "type": "function",
+        "z": "26188f89.87d0a",
+        "name": "",
+        "func": "return { payload: JSON.parse(msg.payload)};",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1050,
+        "y": 280,
+        "wires": [
+            [
+                "68c58bb.526f374"
+            ]
+        ]
+    },
+    {
+        "id": "68c58bb.526f374",
+        "type": "switch",
+        "z": "26188f89.87d0a",
+        "name": "",
+        "property": "payload.result[0]",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "\"ok\"",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 1170,
+        "y": 280,
+        "wires": [
+            [],
+            []
+        ]
+    }
+]
