@@ -84,7 +84,7 @@ else if (msg.payload.hasOwnProperty("MotionDetected") && msg.payload.MotionDetec
 
 //Таймер
 else if (msg.payload.hasOwnProperty("timer")) {
-    if (msg.payload.timer === 1 && msg.payload.timer === 3 && !room.InBed) {
+    if ((msg.payload.timer === 1 || msg.payload.timer === 3) && !room.InBed) {
         flow.set("Bedroom.PepIn", false);
         return [nmsg(0), null, null, null, null, nmsg("Людей нет = 0")];
     } else if (msg.payload.timer === 2 && !room.TVOn && room.SleepMode) {
